@@ -1,25 +1,37 @@
 import logging
-from logging.handlers import RotatingFileHandler
 
-# Set up logging configuration
-def setup_logger(log_file='app.log', max_bytes=5*1024*1024, backup_count=5):
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
+# Set up a logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
-    # Create a rotating file handler
-    handler = RotatingFileHandler(log_file, maxBytes=max_bytes, backupCount=backup_count)
-    handler.setLevel(logging.INFO)
+# Create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
 
-    # Create a formatter and set it for the handler
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    handler.setFormatter(formatter)
+# Create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    # Add the handler to the logger
-    logger.addHandler(handler)
+# Add formatter to ch
+ch.setFormatter(formatter)
 
-    return logger
+# Add ch to logger
+logger.addHandler(ch)
 
-# Example usage
-if __name__ == '__main__':
-    logger = setup_logger()
-    logger.info('Logger initialized and ready to use.')
+# Function to log messages with error handling
+
+def log_message(level, message):
+    try:
+        if level == 'debug':
+            logger.debug(message)
+        elif level == 'info':
+            logger.info(message)
+        elif level == 'warning':
+            logger.warning(message)
+        elif level == 'error':
+            logger.error(message)
+        elif level == 'critical':
+            logger.critical(message)
+        else:
+            raise ValueError('Invalid log level: {}'.format(level))
+    except Exception as e:
+        logger.error('Logging failed: {}'.format(e))
