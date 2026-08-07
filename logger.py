@@ -1,37 +1,40 @@
 import logging
 
-# Set up a logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+# Configure the logger for the application
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Create console handler and set level to debug
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
+class Logger:
+    def __init__(self, name):
+        self.logger = logging.getLogger(name)
 
-# Create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    def debug(self, message):
+        self.logger.debug(message)
 
-# Add formatter to ch
-ch.setFormatter(formatter)
+    def info(self, message):
+        self.logger.info(message)
 
-# Add ch to logger
-logger.addHandler(ch)
+    def warning(self, message):
+        self.logger.warning(message)
 
-# Function to log messages with error handling
+    def error(self, message):
+        self.logger.error(message)
 
-def log_message(level, message):
-    try:
-        if level == 'debug':
-            logger.debug(message)
-        elif level == 'info':
-            logger.info(message)
-        elif level == 'warning':
-            logger.warning(message)
-        elif level == 'error':
-            logger.error(message)
-        elif level == 'critical':
-            logger.critical(message)
+    def critical(self, message):
+        self.logger.critical(message)
+
+    def exception(self, message):
+        self.logger.exception(message)
+
+    def log_exception(self, e):
+        if isinstance(e, Exception):
+            self.logger.error(f'An error occurred: {str(e)}')
         else:
-            raise ValueError('Invalid log level: {}'.format(level))
-    except Exception as e:
-        logger.error('Logging failed: {}'.format(e))
+            self.logger.error('An unknown error occurred')
+
+# Example usage:
+# logger = Logger(__name__)
+# try:
+#     1 / 0  # This will raise an exception
+# except Exception as e:
+#     logger.log_exception(e)  
