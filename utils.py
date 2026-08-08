@@ -1,36 +1,22 @@
-import os
-import json
-from typing import Any, Dict, List
+import time
+import requests
+from requests.exceptions import RequestException
 
-def load_json(file_path: str) -> Dict[str, Any]:
-    """Load a JSON file and return its content as a dictionary."""
-    with open(file_path, 'r') as file:
-        return json.load(file)
+def retry_request(url, retries=3, delay=2):
+    """Send a GET request to the specified URL with retry logic."
+    for attempt in range(retries):
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            return response.json()
+        except RequestException as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
+            if attempt < retries - 1:
+                time.sleep(delay)
+                continue
+            else:
+                raise
 
-
-def save_json(file_path: str, data: Dict[str, Any]) -> None:
-    """Save a dictionary as a JSON file."""
-    with open(file_path, 'w') as file:
-        json.dump(data, file, indent=4)
-
-
-def list_files(directory: str) -> List[str]:
-    """Return a list of files in the given directory."""
-    return [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
-
-
-def is_json_file(file_path: str) -> bool:
-    """Check if a file is a valid JSON file based on its extension."""
-    return file_path.endswith('.json')
-
-
-def read_file(file_path: str) -> str:
-    """Read the content of a text file and return it as a string."""
-    with open(file_path, 'r') as file:
-        return file.read()
-
-
-def write_file(file_path: str, content: str) -> None:
-    """Write a string to a text file."""
-    with open(file_path, 'w') as file:
-        file.write(content)
+# Example usage:
+# result = retry_request('https://api.example.com/data')
+# print(result)
