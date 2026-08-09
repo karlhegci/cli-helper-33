@@ -1,40 +1,23 @@
 import logging
+from logging.handlers import RotatingFileHandler
 
-# Configure the logger for the application
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
+def setup_logger(log_file, max_bytes=5*1024*1024, backup_count=3):
+    """
+    Set up a rotating logger.
 
-class Logger:
-    def __init__(self, name):
-        self.logger = logging.getLogger(name)
+    Args:
+        log_file (str): The path to the log file.
+        max_bytes (int): Maximum size of the log file before rotation.
+        backup_count (int): Maximum number of backup files to keep.
+    """
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.DEBUG)
 
-    def debug(self, message):
-        self.logger.debug(message)
+    handler = RotatingFileHandler(log_file, maxBytes=max_bytes, backupCount=backup_count)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
 
-    def info(self, message):
-        self.logger.info(message)
+    logger.addHandler(handler)
+    return logger
 
-    def warning(self, message):
-        self.logger.warning(message)
-
-    def error(self, message):
-        self.logger.error(message)
-
-    def critical(self, message):
-        self.logger.critical(message)
-
-    def exception(self, message):
-        self.logger.exception(message)
-
-    def log_exception(self, e):
-        if isinstance(e, Exception):
-            self.logger.error(f'An error occurred: {str(e)}')
-        else:
-            self.logger.error('An unknown error occurred')
-
-# Example usage:
-# logger = Logger(__name__)
-# try:
-#     1 / 0  # This will raise an exception
-# except Exception as e:
-#     logger.log_exception(e)  
+logger = setup_logger('app.log')
