@@ -1,26 +1,42 @@
-import requests
-import time
-from requests.exceptions import RequestException
+import re
 
-def retry_request(url, max_retries=3, delay=2):
-    """Attempts to send a GET request to the specified URL with retry logic."""
-    for attempt in range(max_retries):
-        try:
-            response = requests.get(url)
-            response.raise_for_status()  # Raises an HTTPError for bad responses
-            return response.json()  # Return response as JSON
-        except RequestException as e:
-            if attempt < max_retries - 1:
-                print(f"Attempt {attempt + 1} failed: {e}. Retrying in {delay} seconds...")
-                time.sleep(delay)
-            else:
-                print(f"Failed after {max_retries} attempts: {e}")
-                raise
+class ValidationError(Exception):
+    pass
 
-# Example usage
-if __name__ == '__main__':
-    try:
-        data = retry_request('https://api.example.com/data')
-        print(data)
-    except Exception as e:
-        print(f"Error retrieving data: {e}")
+def validate_email(email):
+    """
+    Validate the email address format.
+    """
+    if not isinstance(email, str):
+        raise ValidationError("Email must be a string.")
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if not re.match(email_regex, email):
+        raise ValidationError("Invalid email format.")
+    return True
+
+def validate_age(age):
+    """
+    Validate the age to be a positive integer.
+    """
+    if not isinstance(age, int):
+        raise ValidationError("Age must be an integer.")
+    if age < 0:
+        raise ValidationError("Age cannot be negative.")
+    return True
+
+def validate_username(username):
+    """
+    Validate the username to be non-empty and alphanumeric.
+    """
+    if not isinstance(username, str):
+        raise ValidationError("Username must be a string.")
+    if not username:
+        raise ValidationError("Username cannot be empty.")
+    if not username.isalnum():
+        raise ValidationError("Username must be alphanumeric.")
+    return True
+
+# Example usage (commented out to avoid execution):
+# validate_email('test@example.com')  # Should pass
+# validate_age(25)  # Should pass
+# validate_username('user123')  # Should pass
