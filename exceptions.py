@@ -1,30 +1,27 @@
 class CustomError(Exception):
-    """Base class for custom exceptions."""
+    """Base class for other exceptions."""
     pass
 
+class NotFoundError(CustomError):
+    """Exception raised for not found errors."""
+    def __init__(self, message="Resource not found."):
+        self.message = message
+        super().__init__(self.message)
+
 class ValidationError(CustomError):
-    """Raised for validation errors."""
-    def __init__(self, message, field):
-        self.message = message
-        self.field = field
-        super().__init__(self.message)
-
-class ConnectionError(CustomError):
-    """Raised for connection errors."""
-    def __init__(self, message):
+    """Exception raised for validation errors."""
+    def __init__(self, message="Invalid input provided."):
         self.message = message
         super().__init__(self.message)
 
-def raise_if_invalid(value, field_name):
-    if not isinstance(value, str) or not value:
-        raise ValidationError("Invalid value provided", field_name)
+class DatabaseError(CustomError):
+    """Exception raised for database related errors."""
+    def __init__(self, message="Database operation failed."):
+        self.message = message
+        super().__init__(self.message)
 
-def perform_operation(data):
-    try:
-        raise_if_invalid(data.get('name'), 'name')
-        # Simulate operation
-        print("Operation performed successfully")
-    except ValidationError as ve:
-        print(f'ValidationError: {ve.message} for field {ve.field}')
-    except Exception as e:
-        print(f'An unexpected error occurred: {e}')
+class AuthenticationError(CustomError):
+    """Exception raised for authentication errors."""
+    def __init__(self, message="Authentication failed."):
+        self.message = message
+        super().__init__(self.message)
