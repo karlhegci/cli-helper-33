@@ -1,27 +1,36 @@
-class CustomError(Exception):
-    """Base class for other exceptions."""
+class ClickerError(Exception):
+    """Base class for exceptions in the autoclicker module."""
     pass
 
-class NotFoundError(CustomError):
-    """Exception raised for not found errors."""
-    def __init__(self, message="Resource not found."):
-        self.message = message
-        super().__init__(self.message)
+class InvalidClickFrequencyError(ClickerError):
+    """Exception raised for invalid click frequency values."""
+    def __init__(self, frequency):
+        super().__init__(f"Invalid click frequency: {frequency}. Must be greater than zero.")
+        self.frequency = frequency
 
-class ValidationError(CustomError):
-    """Exception raised for validation errors."""
-    def __init__(self, message="Invalid input provided."):
-        self.message = message
-        super().__init__(self.message)
+class ClickerNotActiveError(ClickerError):
+    """Exception raised when trying to stop an inactive autoclicker."""
+    def __init__(self):
+        super().__init__("Cannot stop the autoclicker because it is not currently active.")
 
-class DatabaseError(CustomError):
-    """Exception raised for database related errors."""
-    def __init__(self, message="Database operation failed."):
-        self.message = message
-        super().__init__(self.message)
+class DelayOutOfRangeError(ClickerError):
+    """Exception raised for delays outside the permissible range."""
+    def __init__(self, delay):
+        super().__init__(f"Delay out of range: {delay}. Must be between 0.01 and 10 seconds.")
+        self.delay = delay
 
-class AuthenticationError(CustomError):
-    """Exception raised for authentication errors."""
-    def __init__(self, message="Authentication failed."):
-        self.message = message
-        super().__init__(self.message)
+# Example of raising these exceptions in the code
+
+def set_click_frequency(frequency):
+    if frequency <= 0:
+        raise InvalidClickFrequencyError(frequency)
+
+
+def stop_clicker(active):
+    if not active:
+        raise ClickerNotActiveError()
+
+
+def set_delay(delay):
+    if delay < 0.01 or delay > 10:
+        raise DelayOutOfRangeError(delay)
