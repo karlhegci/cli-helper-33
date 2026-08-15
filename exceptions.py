@@ -1,36 +1,23 @@
-class ClickerError(Exception):
-    """Base class for exceptions in the autoclicker module."""
+class AutoClickerError(Exception):
+    """Base class for exceptions in the AutoClicker module."""
     pass
 
-class InvalidClickFrequencyError(ClickerError):
-    """Exception raised for invalid click frequency values."""
-    def __init__(self, frequency):
-        super().__init__(f"Invalid click frequency: {frequency}. Must be greater than zero.")
-        self.frequency = frequency
+class InvalidConfigurationError(AutoClickerError):
+    """Exception raised for invalid configuration errors."""
+    def __init__(self, message):
+        super().__init__(message)
 
-class ClickerNotActiveError(ClickerError):
-    """Exception raised when trying to stop an inactive autoclicker."""
-    def __init__(self):
-        super().__init__("Cannot stop the autoclicker because it is not currently active.")
+class ClickRateTooHighError(AutoClickerError):
+    """Exception raised when click rate exceeds the limit."""
+    def __init__(self, rate):
+        message = f'Click rate {rate} exceeds the maximum limit.'
+        super().__init__(message)
 
-class DelayOutOfRangeError(ClickerError):
-    """Exception raised for delays outside the permissible range."""
-    def __init__(self, delay):
-        super().__init__(f"Delay out of range: {delay}. Must be between 0.01 and 10 seconds.")
-        self.delay = delay
+class ClickerStoppedError(AutoClickerError):
+    """Exception raised when the clicker is stopped unexpectedly."""
+    pass
 
-# Example of raising these exceptions in the code
-
-def set_click_frequency(frequency):
-    if frequency <= 0:
-        raise InvalidClickFrequencyError(frequency)
-
-
-def stop_clicker(active):
-    if not active:
-        raise ClickerNotActiveError()
-
-
-def set_delay(delay):
-    if delay < 0.01 or delay > 10:
-        raise DelayOutOfRangeError(delay)
+class ClickerNotRunningError(AutoClickerError):
+    """Exception raised when trying to stop a clicker that is not running."""
+    def __init__(self, message):
+        super().__init__(message)
