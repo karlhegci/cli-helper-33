@@ -1,17 +1,25 @@
-# CLI Helper 33
+# cli-helper-33
 
-CLI Helper 33 is a versatile command-line interface tool designed to streamline and simplify common tasks in Python development. With a user-friendly interface, this tool enhances your productivity by providing quick access to essential functionalities.
+cli-helper-33 is a Python-based command-line utility designed to simplify and automate repetitive clicking tasks on your desktop. With advanced features such as customizable click patterns and scheduling, this tool is perfect for gamers and productivity enthusiasts alike.
 
 ## Features
 
-- **Task Automation**: Easily automate repetitive tasks like file management, data processing, and environment setup with simple commands.
-- **Interactive Command Prompts**: Use intuitive prompts to guide users through task completion, minimizing errors and enhancing user experience.
-- **Customizable Scripts**: Modify and extend the functionality of built-in scripts to fit your specific workflow requirements.
-- **Comprehensive Help System**: Get instant access to help and usage instructions for every command, ensuring you maximize the tool’s potential.
+- **Custom Click Patterns**: Define specific click locations and sequences to automate tasks with precision.
+- **Scheduling**: Set click actions to trigger at predetermined intervals, ensuring consistent performance.
+- **Hotkey Support**: Activate and deactivate clicking routines using customizable keyboard shortcuts for seamless control.
+- **User-friendly CLI**: Intuitive command-line interface that allows quick setup and modification of click routines.
 
 ## Installation
 
-To install CLI Helper 33, you can use `pip`, the package installer for Python. To get started, run the following command:
+To install cli-helper-33, ensure you have Python 3.6 or higher installed. Then, use the following commands:
+
+```bash
+git clone https://github.com/YourUsername/cli-helper-33.git
+cd cli-helper-33
+pip install -r requirements.txt
+```
+
+Alternatively, you can install it directly from PyPI:
 
 ```bash
 pip install cli-helper-33
@@ -19,25 +27,16 @@ pip install cli-helper-33
 
 ## Basic Usage Example
 
-Here’s a quick example of how to use CLI Helper 33 to create a new project directory and initialize a basic Python environment:
+Once installed, you can run cli-helper-33 with a simple command:
 
 ```bash
-# Create a new project directory
-cli-helper --create-project my_new_project
-
-# Navigate to the project directory
-cd my_new_project
-
-# Initialize a new Python virtual environment
-cli-helper --setup-env
+cli-helper-33 --click-pattern "100,200" --interval 0.5
 ```
 
-With these commands, you’ll have a structured project set up and ready for development in no time.
+This command will simulate a mouse click at coordinates (100, 200) every 0.5 seconds. For advanced usage, such as saving patterns and utilizing hotkeys, refer to the [Documentation](https://github.com/YourUsername/cli-helper-33/wiki).
+
+![MIT License](https://img.shields.io/badge/license-MIT-green.svg)
 
 ## License
 
-![MIT License](https://img.shields.io/badge/license-MIT-green)
-
-This project is licensed under the MIT License. For more details, see the [LICENSE](LICENSE) file. 
-
-With CLI Helper 33, your project setup and management are just a command away—effortlessly implement your ideas and boost your workflow today!
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
