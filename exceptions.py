@@ -1,23 +1,19 @@
 class AutoClickerError(Exception):
-    """Base class for exceptions in the AutoClicker module."""
+    """Base class for exceptions in the AutoClicker application."""
     pass
 
-class InvalidConfigurationError(AutoClickerError):
-    """Exception raised for invalid configuration errors."""
-    def __init__(self, message):
+class ClickRateError(AutoClickerError):
+    """Exception raised for invalid click rate errors."""
+    def __init__(self, message: str) -> None:
         super().__init__(message)
 
-class ClickRateTooHighError(AutoClickerError):
-    """Exception raised when click rate exceeds the limit."""
-    def __init__(self, rate):
-        message = f'Click rate {rate} exceeds the maximum limit.'
+class ClickLimitExceeded(AutoClickerError):
+    """Exception raised when the click limit is exceeded."""
+    def __init__(self, limit: int) -> None:
+        message = f'Click limit of {limit} exceeded.'
         super().__init__(message)
 
-class ClickerStoppedError(AutoClickerError):
-    """Exception raised when the clicker is stopped unexpectedly."""
-    pass
-
-class ClickerNotRunningError(AutoClickerError):
-    """Exception raised when trying to stop a clicker that is not running."""
-    def __init__(self, message):
+class ConfigurationError(AutoClickerError):
+    """Exception raised for configuration related errors."""
+    def __init__(self, message: str) -> None:
         super().__init__(message)
