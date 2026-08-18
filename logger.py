@@ -1,24 +1,39 @@
 import logging
-from logging.handlers import RotatingFileHandler
+from typing import Optional
 
-# Configure the logger
-logger = logging.getLogger('cli_helper')
-logger.setLevel(logging.DEBUG)
+def setup_logger(name: str, log_file: Optional[str] = None, level: int = logging.INFO) -> logging.Logger:
+    """
+    Set up a logger with the specified name and log file.
+    
+    Parameters:
+        name (str): The name of the logger.
+        log_file (Optional[str]): If specified, log to this file. Otherwise, log to stderr.
+        level (int): Logging level (default is logging.INFO).
+    
+    Returns:
+        logging.Logger: Configured logger instance.
+    """
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
 
-# Create a rotating file handler
-handler = RotatingFileHandler('cli_helper.log', maxBytes=5*1024*1024, backupCount=3)
-handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-# Create a formatter and set it for the handler
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
+    if log_file:
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+    else:
+        console_handler = logging.StreamHandler()
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
 
-# Add the handler to the logger
-logger.addHandler(handler)
+    return logger
 
-# Example log messages
-logger.debug('Debugging information')
-logger.info('Informational message')
-logger.warning('A warning occurred')
-logger.error('An error has happened')
-logger.critical('Critical issue')
+# Example of using the logger
+if __name__ == "__main__":
+    log = setup_logger('my_app', level=logging.DEBUG)
+    log.debug('This is a debug message.')
+    log.info('Informational message.')
+    log.warning('Warning message.')
+    log.error('Error message.')
+    log.critical('Critical message.')
