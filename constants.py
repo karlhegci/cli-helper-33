@@ -1,19 +1,33 @@
-AUTORUN_INTERVAL = 0.1  # time in seconds between clicks
-MAX_CLICKS = 1000  # maximum number of clicks
+import os
 
-CLICK_BUTTONS = {  # mapping of button names to their codes
-    'left': 1,
-    'middle': 2,
-    'right': 3,
+# Constant for the maximum number of clicks per second
+MAX_CLICKS_PER_SECOND = 20
+
+# Path constants for the configuration files
+CONFIG_PATH = os.path.join(os.path.expanduser('~'), '.autoclicker', 'config.json')
+LOG_PATH = os.path.join(os.path.expanduser('~'), '.autoclicker', 'app.log')
+
+# Default values for settings
+DEFAULT_SETTINGS = {
+    'click_interval': 0.05,  # Interval between clicks in seconds
+    'click_button': 'left',  # Button to click
+    'repeat_count': 1000     # Number of times to click
 }
 
-ERROR_MESSAGES = {  # common error messages
-    'over_limit': 'Exceeded the maximum number of clicks.',
-    'invalid_button': 'The specified button is not valid.',
+# Error messages
+ERROR_MESSAGES = {
+    'file_not_found': 'Configuration file not found.',
+    'invalid_setting': 'One or more settings are invalid.'
 }
 
-CONFIGURATION = {
-    'click_speed': AUTORUN_INTERVAL,
-    'max_clicks': MAX_CLICKS,
-    'default_button': 'left',
-}
+# Supported mouse buttons
+MOUSE_BUTTONS = ['left', 'right', 'middle']
+
+# Application version
+APP_VERSION = '1.0.0'
+
+# Debug mode
+DEBUG_MODE = False
+
+# Environment constants
+ENVIRONMENT = os.getenv('AUTOMATION_ENV', 'development')
